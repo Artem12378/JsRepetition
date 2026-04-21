@@ -1,66 +1,98 @@
-/* Задание 1: Деструктуризация массивов
-Создайте массив weekDays со значениями ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
-Используя деструктуризацию, извлеките: 
-Выходные дни в массив weekend 
-Последний рабочий день недели в переменную lastWorkDay 
-Первый рабочий день недели в переменную firstWorkDay
-Выведите все полученные переменные в консоль */
+/* Задание 1: Выбор элементов DOM
+Создайте HTML-страницу с навигационным меню, содержащим:
 
-const weekDays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+Главный заголовок (<h1>) с id="mainTitle"
+Навигационную панель (<nav>) с классом "mainNav"
+Список (<ul>) с 4 элементами списка (<li>) с классом "navItem"
+Каждый элемент списка должен содержать пустую ссылку (
+Используя JavaScript, выполните следующие действия:
 
-const [firstWorkDay, , , ,lastWorkDay ,...weekend] = weekDays
-console.log(firstWorkDay)
-console.log(lastWorkDay)
-console.log(weekend)
+Получите доступ к заголовку, используя getElementById
+Получите доступ к навигационной панели, используя querySelector
+Получите все элементы списка с классом "navItem", используя getElementsByClassName
+Получите те же элементы списка, используя querySelectorAll
+Выведите все полученные элементы в консоль */
 
-
-/* Задание 2: Деструктуризация объектов
-Создайте объект person со следующими свойствами:
-
-
-Используя деструктуризацию, извлеките:
-
-Имя и фамилию в переменные name и surname
-Возраст в переменную personAge
-Массив навыков в переменную abilities
-Университет в переменную university
- */
-
-const person = {
-    firstName:'Иван',
-    lastName: 'Петров',
-    age: 25,
-    country: 'Россия',
-    city: 'Москва',
-    skills:['JavaScript', 'HTML', 'CSS'],
-    education: {
-        degree:'Магистр',
-        university:'МГУ'
-    } 
-};
-
-const {firstName:name, lastName:surname, age:personAge, skills:abilities, education:{university} } = person
-console.log(name)
-console.log(personAge)
-console.log(abilities)
-console.log(university)
+const header = document.getElementById('mainTitle')
+const navMenuTag = document.querySelector('nav')
+const allLiItem = document.getElementsByClassName('navItem')
+const selItem = document.querySelectorAll('li')
+const linkA = document.querySelectorAll('a')
 
 
-/* Задание 3: Rest-оператор
-Создайте функцию calculateAverage, которая принимает неограниченное количество аргументов-чисел и возвращает их среднее арифметическое
-Используйте rest-оператор для сбора всех аргументов в массив
-Протестируйте функцию для разных наборов чисел:
-console.log(calculateAverage(5, 10, 15)); // 10
+console.log(header)
+console.log(navMenuTag)
+console.log(allLiItem)
+console.log(selItem)
 
-console.log(calculateAverage(2, 4, 6, 8, 10)); // 6
 
-console.log(calculateAverage(1)); // 1
+/* Задание 2: Изменение содержимого и атрибутов
+Используя полученные в задании 1 элементы:
 
-console.log(calculateAverage()); // 0 или NaN или другое значение по умолчанию */
+Измените текст заголовка на "Моё навигационное меню"
+Создайте массив с названиями пунктов меню: "Главная", "О нас", "Услуги", "Контакты"
+Создайте массив с соответствующими ссылками: "index.html", "about.html", "services.html", "contacts.html"
+Используя цикл, установите для каждой ссылки в меню текст из первого массива
+В том же цикле установите для каждой ссылки атрибут href со значением из второго массива
+Добавьте для первой ссылки атрибут title со значением "Перейти на главную страницу" */
 
-function calculateAverage(...sum){
-    const newSum = [...sum].reduce((sumPlus,n) => sumPlus + n,0);
-    return newSum
+
+
+header.textContent = 'Моё навигационное меню'
+const MenuItem = ["Главная", "О нас", "Услуги", "Контакты"];
+const MenuHref = ["index.html", "about.html", "services.html", "contacts.html"]
+
+console.log(allLiItem[0].textContent = `${MenuItem[0]}`)
+
+
+for (let i = 0; i < MenuItem.length; i++) {
+    linkA[i].textContent = MenuItem[i];
+    linkA[i].href = MenuHref[i];
 }
 
-console.log(calculateAverage(1,2,3,4,5,6,7,8,9,10))
+
+linkA[0].setAttribute('title', 'Перейти на главную страницу');
+
+
+
+/* Задание 3: Работа с дочерними элементами
+Для той же HTML-страницы:
+
+Получите доступ к первому элементу списка через его родителя (список ul)
+Получите доступ к ссылке внутри второго элемента списка через его родителя
+Добавьте для навигационной панели внутренний отступ (padding) 15px, используя свойство style
+Измените цвет текста для всех ссылок в меню на темно-синий
+Для последней ссылки в меню измените фоновый цвет на светло-серый */
+
+const newUlaccess = document.querySelector('nav ul')
+console.log(newUlaccess)
+
+const newUlAccess = newUlaccess.children[1]
+const newLinkLi = newUlAccess.querySelector('a')
+console.log(newLinkLi)
+
+header.style.padding=`15px`
+linkA.forEach(link => link.style.color ='red')
+
+
+console.log(header)
+console.log(linkA)
+
+
+/* Дополнительное задание
+Создайте кнопку под навигационным меню с текстом "Сменить тему". При нажатии на кнопку:
+
+Если у навигационной панели светлый фон, сделайте его темным, а текст светлым
+Если у навигационной панели темный фон, сделайте его светлым, а текст темным
+Используйте для этого функцию-обработчик события и свойство style */
+
+const Container = document.querySelector('.container')
+const button = document.querySelector('button')
+
+button.addEventListener('click', ()=> {
+    Container.style.backgroundColor = 
+        Container.style.backgroundColor === 'black' ? 'red' : 'black';
+})
+
+
+console.log(button)
