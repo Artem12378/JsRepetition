@@ -226,6 +226,8 @@ document.body.appendChild(Ul)
 document.body.appendChild(Ul); // добавил в конец <body>
 
 
+
+
 /* Задание 3: Динамическое изменение контента
 Добавьте кнопку "Добавить пункт меню" на страницу
 При нажатии на кнопку:
@@ -256,3 +258,264 @@ buttonAddMenu.addEventListener('click', () => {
 
 console.log(buttonAddMenu)
 
+
+let titleClickCount = 0
+
+header.addEventListener('click', ()=> {
+    titleClickCount++;
+   
+    !(titleClickCount % 3) ? header.style.color = 'red' : header.style.color = 'green'
+    if( titleClickCount % 10 === 0){
+    header.textContent = 'Вы нашли пасхалку'
+    header.style.color = 'red'
+   }
+})
+
+
+/* let goods = [
+    {name:'apple', price: 1},
+    {name:'banana', price: 2},
+    {name:'orange', price: 3},
+    {name:'kiwi', price: 4},
+    {name:'mango', price: 5}
+] */
+/* 
+const goodsList = document.getElementById('goodsList')
+
+const renderGoods = (goodsToRender) => { 
+    while(goodsList.firstChild){
+        goodsList.firstChild.remove()
+    }
+
+    if(!goodsToRender.length){
+        const liEmpty  = document.createElement('li');
+        liEmpty.textContent = `пусто`
+        goodsList.appendChild(liEmpty)
+    }
+
+    goodsToRender.forEach((item) => {
+        const liGood  = document.createElement('li');
+        liGood.textContent = `${item.name} - ${item.price}`
+        goodsList.appendChild(liGood)
+    })
+}
+
+const filterContainer = document.createElement('div')
+filterContainer.style.display = 'flex'
+filterContainer.style.width = '100%'
+
+const filterInput = document.createElement('input')
+filterInput.placeholder = 'Filter goods by price'
+filterContainer.appendChild(filterInput)
+
+filterInput.addEventListener('input', (event) => {
+    const EventValue = event.target.value.toLowerCase()
+
+    const goodsToRender = goods.filter((good) => {
+        return good.name.toLowerCase().includes(EventValue)
+    })
+    renderGoods(goodsToRender)
+})
+
+
+const containerDiv = document.querySelector('.container');
+document.body.insertBefore(filterContainer, containerDiv);
+
+
+renderGoods(goods);
+
+ */
+/* Задание 1: Создание пасхалки со счетчиком кликов
+Создайте на странице заголовок с id="pageTitle"
+Напишите JavaScript-код, который: Отслеживает клики по заголовку Считает количество кликов Меняет цвет заголовка на красный при каждом третьем клике Возвращает белый цвет при следующем клике после красного
+Дополнительно: модифицируйте код так, чтобы при достижении 10 кликов текст заголовка менялся на "Вы нашли пасхалку!" */
+
+
+/* В HTML файле создайте структуру для магазина:
+
+<div id="filterContainer"></div>
+
+<nav id="mainNav"></nav>
+
+<div id="goodsList"></div>
+
+Используя JavaScript:
+
+1. Создайте массив товаров с полями:
+
+
+
+2. Напишите функцию renderGoods(goodsToRender), которая:
+
+Очищает контейнер с id="goodsList"
+Создает для каждого товара элемент списка (li)
+Отображает название и цену товара
+Добавляет элементы в контейнер
+При пустом массиве показывает сообщение "Товары не найдены"
+3. Создайте поле для фильтрации товаров:
+
+Программно создайте элемент input и добавьте его в filterContainer
+Настройте отслеживание события input
+При вводе текста фильтруйте товары по названию (без учета регистра)
+Обновляйте список товаров при каждом изменении в поле ввода */
+const goods = [
+    { name: "Яблоко", price: 30 },
+    { name: "Банан", price: 45 },
+    { name: "Апельсин", price: 50 },
+    { name: "Манго", price: 90 },
+    { name: "Киви", price: 60 },
+    { name: "Ананас", price: 120 }
+];
+
+const goodList = document.getElementById('goodsList');
+const ulGood = document.createElement('ul');
+goodList.appendChild(ulGood);
+
+// Стиль для дорогих товаров
+const style = document.createElement('style');
+style.textContent = '.expensive { color: red; }';
+document.head.appendChild(style);
+
+// Функция рендера (обновляет список и счётчик)
+function renderGoods(goodsToRender) {
+    // Очищаем ulGood (не goodsList, иначе удалим сам ulGood)
+    while (ulGood.firstChild) {
+        ulGood.firstChild.remove();
+    }
+
+    if (goodsToRender.length === 0) {
+        const li = document.createElement('li');
+        li.textContent = 'Товары не найдены';
+        li.style.margin = '5px';
+        li.style.backgroundColor = '#f9f9f9';
+        ulGood.appendChild(li);
+    } else {
+        /* Бонусное задание: Интерактивность элементов
+Добавьте обработку событий для элементов списка товаров:
+При наведении мыши на товар меняйте его фон на светло-голубой
+При клике на товар добавляйте его в новый массив "корзина"
+Создайте элемент для отображения количества товаров в корзине
+При повторном клике на товар, уже добавленный в корзину, удаляйте его из корзины */
+        goodsToRender.forEach(el => {
+            const li = document.createElement('li');
+            li.textContent = `${el.name} - ${el.price}`;
+            if (el.price > 80) {
+                li.classList.add('expensive');
+            }
+            ulGood.appendChild(li);
+
+            li.addEventListener('click', () => {
+                const existing = basketCount.findIndex(item => item.name === el.name);
+                if (existing === -1) {
+                    basketCount.push(el);
+                } 
+                basket.textContent = `Корзина: ${basketCount.length}`;
+            });
+
+            li.addEventListener('mouseenter', () => {
+                li.style.backgroundColor = 'lightblue';
+            });
+
+
+            li.addEventListener('mouseleave', () => {
+                li.style.backgroundColor = ''; // возвращаем исходный фон (прозрачный или тот, что был)
+            });
+
+        });
+    }
+
+    // Обновляем счётчик (количество найденных / общее)
+    filterGoodscounter.textContent = `Найдено товаров: ${goodsToRender.length} из ${goods.length}`;
+}
+
+// Создаём счётчик (сразу добавим в filterContainer)
+const filterGoodscounter = document.createElement('div');
+filterGoodscounter.id = 'goodsCounter';
+
+// Создаём контейнер фильтров
+const filterContainer = document.createElement('div');
+filterContainer.style.display = 'flex';
+filterContainer.style.width = '100%';
+
+
+
+
+// Поля ввода и кнопка
+const filterInputName = document.createElement('input');
+filterInputName.placeholder = 'Filter goods by name';
+const filterInputPrice = document.createElement('input');
+filterInputPrice.placeholder = 'Filter goods by price';
+const filterButton = document.createElement('button');
+filterButton.textContent = 'Сбросить фильтры';
+
+const basket = document.createElement('div');
+const basketCount = [];
+basket.textContent = 'Корзина: 0';
+
+
+// Добавляем всё в контейнер
+filterContainer.append(filterInputName, filterInputPrice, filterButton, filterGoodscounter,basket);
+
+// Вставляем фильтры перед .container
+const containerDiv = document.querySelector('.container');
+document.body.insertBefore(filterContainer, containerDiv);
+
+// Стили для списка товаров
+goodList.style.width = '100%';
+goodList.style.padding = '10px';
+goodList.style.border = '1px solid #ccc';
+
+// Обработчики событий
+filterButton.addEventListener('click', () => {
+    filterInputName.value = '';
+    filterInputPrice.value = '';
+    renderGoods(goods);
+});
+
+filterInputPrice.addEventListener('input', (event) => {
+    const priceValue = Number(event.target.value);
+    const filtered = goods.filter(item => item.price >= priceValue);
+    renderGoods(filtered);
+});
+
+filterInputName.addEventListener('input', (event) => {
+    const nameQuery = event.target.value.toLowerCase();
+    const filtered = goods.filter(item => item.name.toLowerCase().includes(nameQuery));
+    renderGoods(filtered);
+});
+
+// Первоначальный рендер всех товаров
+renderGoods(goods);
+/* /* Задание 3: Расширенная фильтрация
+1. Добавьте второе поле ввода для фильтрации по цене:
+
+Программно создайте элемент input с типом "number"
+Добавьте атрибут placeholder="Максимальная цена"
+Фильтруйте товары так, чтобы отображались только те, чья цена меньше или равна введенному значению
+2. Объедините логику фильтрации:
+
+Товары должны соответствовать обоим критериям (и названию, и цене)
+При пустом поле цены учитывайте только фильтр по названию
+При пустом поле названия учитывайте только фильтр по цене */
+
+
+
+
+/* Задание 4: Улучшение интерфейса
+Добавьте стили для списка товаров:
+Для контейнера goodsList: ширина 100%, отступы 10px, рамка 1px solid #ccc
+Для элементов списка: margin: 5px, padding: 10px, background-color: #f9f9f9
+Для товаров, цена которых больше 80: добавляйте класс .expensive с красным текстом цены
+2. Создайте кнопку "Сбросить фильтры":
+
+Программно создайте button и добавьте в filterContainer
+При нажатии очищайте оба поля ввода
+После очистки полей обновите список товаров (отобразите все товары) */
+
+
+/* Бонусное задание: Интерактивность элементов
+Добавьте обработку событий для элементов списка товаров:
+При наведении мыши на товар меняйте его фон на светло-голубой
+При клике на товар добавляйте его в новый массив "корзина"
+Создайте элемент для отображения количества товаров в корзине
+При повторном клике на товар, уже добавленный в корзину, удаляйте его из корзины */
